@@ -101,9 +101,6 @@ if __name__ == "__main__":
     # obj1 = bisection(f1, 12)
     # obj1.routine([1, 2])
     #
-    ob = false_position(fluid, 12)
-
-
+    ob = false_position(fluid, 5)
     ob.routine([0, 3])
-
     print(fluid(3))
