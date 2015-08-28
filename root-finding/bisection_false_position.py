@@ -3,13 +3,16 @@
 
 import math
 
-def f(x):
+def f0(x):
     return (math.tan(math.pi * x) - x - 6) 
+
+def f1(x):
+    return (x**3 + (2 * x**2) - (3 * x) - 1)
 
 class num_method(object):
     def __init__(self, f, r = None):
         self.f = f
-        self.MAX_ITER = 990
+        self.MAX_ITER = 99
         self.root = None
         self.round = r
         self.temp_iter = 0
@@ -41,11 +44,7 @@ class num_method(object):
             iter_count = self.temp_iter
             self.temp_iter = 0
             return self.root, iter_count
-        elif self.root == approx_root:
-            # CONVERGED!
-            iter_count = self.temp_iter
-            self.temp_iter = 0
-            return self.root, iter_count
+
         else:
             self.root = approx_root
             return self.routine(new_interval)
@@ -54,12 +53,31 @@ class bisection(num_method):
     def root_approx(self, lower, upper):
         return (lower + upper) / 2
 
-class false_positive(num_method):
+class false_position(num_method):
+    def __init__(self, f, r = None):
+        self.pn = []
+        self.er = []
+        self.count = 0
+        super(false_position, self).__init__(f, r)
+
     def root_approx(self, a, b):
-        return (b - f(b) * ((b - a) / (f(b) - f(a))))
+        root = (b - self.f(b) * ((b - a) / (self.f(b) - self.f(a))))
+        self.count += 1
+        self.pn.append(root)
+        print ("Count: {0}, Root: {1} -> Error: {2}".format(self.count, root, self.error(self.count - 1)))
+        return root
+
+    def error(self, n):
+        if n < 2:
+            return None
+
+        try:
+            l = (self.pn[n] - self.pn[n - 1]) / (self.pn[n - 1] - self.pn[n - 2])
+
+            return math.fabs((l / (l - 1)) * (self.pn[n] - self.pn[n - 1]))
+        except ZeroDivisionError:
+            return None
 
 if __name__ == "__main__":
-    obj1 = bisection(f, 9)
-    obj2 = false_positive(f, 9)
-    print (obj1.routine([0, 0.49]))
-    print (obj2.routine([0, 0.49]))
+    obj2 = false_position(f1, 20)
+    print (obj2.routine([1, 2]))
