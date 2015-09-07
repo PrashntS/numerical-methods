@@ -92,6 +92,34 @@ class false_position(num_method):
         except ZeroDivisionError:
             return None
 
+class newton_method(object):
+    def __init__(self, func, func_, r = 4):
+        self.f  = func
+        self.f_ = func_
+        self.r  = r
+        self.count = 0
+
+    def iterate(self, xo):
+        self.count += 1
+        val = round(self.root(xo), 10)
+        print ("Method -> Newton's, Count -> {0}, Root -> {1}".format(self.count, val))
+        if val == xo:
+            "Converged"
+            return val, self.count
+        elif self.count == 200:
+            return val, self.count
+        else:
+            return self.iterate(val)
+
+    def root(self, xn):
+        return (xn - self.f(xn) / self.f_(xn))
+
+def func(x):
+    return x * (1 - math.cos(x))
+
+def func_(x):
+    return (1 - math.cos(x)) + x * math.sin(x)
+
 if __name__ == "__main__":
     # obj2 = false_position(f1, 12)
     # obj2.routine([1, 2])
@@ -101,6 +129,8 @@ if __name__ == "__main__":
     # obj1 = bisection(f1, 12)
     # obj1.routine([1, 2])
     #
-    ob = false_position(fluid, 5)
-    ob.routine([0, 3])
-    print(fluid(3))
+    ob = bisection(func, 5)
+    ob.routine([-2, 1])
+    
+    ob = newton_method(func, func_)
+    ob.iterate(1)
