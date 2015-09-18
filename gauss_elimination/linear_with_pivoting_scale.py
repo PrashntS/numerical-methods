@@ -205,6 +205,12 @@ class GaussElimination(object):
         return s
 
     def mapped_sol(self):
+        """
+        Maps the obtained solution in a single dict.
+
+        Returns:
+            (dict): Solution
+        """
         sol = self.solve()
         return [("x{0}".format(_), sol[_]) for _ in range(len(sol))]
 
