@@ -4,19 +4,31 @@
 import math
 
 def f0(x):
-    return (math.tan(math.pi * x) - x - 6) 
+    """Function 1"""
+    return (math.tan(math.pi * x) - x - 6)
 
 def f1(x):
+    """Function 2"""
     return (x**3 + (2 * x**2) - (3 * x) - 1)
 
 def fluid(x):
+    """Function 3"""
     rho_f = 0.890
     rho_o = 0.120
     r     = 5
     return (((rho_f / 3) * x**3) - (r * rho_f * x**2) + ((4 * r**3 * rho_o) / 3))
 
 class num_method(object):
+    """
+    This is a base class incorporating some common functions of all the three methods.
+    Other methods inherit this class.
+    """
+
     def __init__(self, f, r = None):
+        """
+        Constructor Method.
+        """
+
         self.f = f
         self.MAX_ITER = 99
         self.root = None
@@ -24,6 +36,10 @@ class num_method(object):
         self.temp_iter = 0
 
     def choose_interval(self, left, right):
+        """
+        Returns correct interval.
+        """
+
         left_multiple  = self.f(left[0])  * self.f(left[1])
         right_multiple = self.f(right[0]) * self.f(right[1])
 
@@ -37,6 +53,10 @@ class num_method(object):
             return None
 
     def routine(self, interval):
+        """
+        Defines iteration scheme.
+        """
+
         self.temp_iter += 1
         approx_root  = self.root_approx(interval[0], interval[1])
 
@@ -64,12 +84,20 @@ class num_method(object):
             return self.routine(new_interval)
 
 class bisection(num_method):
+    """
+    Implements Previous Class, to approximate the Root using Bisection Method.
+    """
+
     def root_approx(self, lower, upper):
         root = (lower + upper) / 2
         print ("Method: Bisection -> Count: {0}, Root: {1}".format(self.temp_iter, root))
         return root
 
 class false_position(num_method):
+    """
+    Implements False Position Method.
+    """
+
     def __init__(self, f, r = None):
         self.pn = []
         self.er = []
@@ -93,6 +121,10 @@ class false_position(num_method):
             return None
 
 class newton_method(object):
+    """
+    Implements Newtons Method.
+    """
+
     def __init__(self, func, func_, r = 4):
         self.f  = func
         self.f_ = func_
@@ -121,16 +153,12 @@ def func_(x):
     return (1 - math.cos(x)) + x * math.sin(x)
 
 if __name__ == "__main__":
-    # obj2 = false_position(f1, 12)
-    # obj2.routine([1, 2])
+    """
+    Main Function and Example Usage.
+    """
 
-    # print("LOL")
-
-    # obj1 = bisection(f1, 12)
-    # obj1.routine([1, 2])
-    #
     ob = bisection(func, 5)
     ob.routine([-2, 1])
-    
+
     ob = newton_method(func, func_)
     ob.iterate(1)
