@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+bower_components/
+*.out
+
+
+gauss_elimination/systm
