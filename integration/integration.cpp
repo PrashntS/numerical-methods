@@ -147,6 +147,7 @@ double composite(function <double (function <double (double, double)>, double, d
       integral += rule(f, _a, _b, _c, _d);
     }
   }
+
   return integral;
 }
 
@@ -182,7 +183,7 @@ int main(int argc, char const *argv[]) {
   cout << "One Point Quadrature:  " << composite(one_point_quadrature1D, f1, lower, upper, subinterval) << "\n";
   cout << "Two Points Quadrature: " << composite(two_point_quadrature1D, f1, lower, upper, subinterval) << "\n\n\n";
 
-  cout << "Integral of Two Dimesional function f(x, y) = sin(x^2) + cos(y^2) from x, y 0 to 5." << "\n\n";
+  cout << "Integral of Two Dimesional function f(x, y) = sin(x^2) + y^2 from x = 0 to 1, and, y = 4 to 6." << "\n\n";
 
   double a = 0, b = 1, c = 4, d = 6;
 
