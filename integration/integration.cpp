@@ -52,7 +52,7 @@ double one_point_quadrature2D(function <double (double, double)> f,
                             double c,
                             double d) {
   double wi = (b - a),
-         wj = (c - d),
+         wj = (d - c),
          xi = (b + a) / 2,
          xj = (c + d) / 2;
 
@@ -157,7 +157,7 @@ double f1(double x) {
  * Two Dimesional Function
  */
 double f2(double x, double y) {
-  return sin(x * x) + cos(y * y);
+  return (x * x) + (y * y);
 }
 
 int main(int argc, char const *argv[]) {
@@ -177,13 +177,13 @@ int main(int argc, char const *argv[]) {
 
   cout << "Integral of Two Dimesional function f(x, y) = sin(x^2) + cos(y^2) from x, y 0 to 5." << "\n\n";
 
-  cout << "One Point Quadrature:  " << one_point_quadrature2D(f2, 0, 5, 0, 5) << "\n";
-  cout << "Two Points Quadrature: " << two_point_quadrature2D(f2, 0, 5, 0, 5) << "\n\n";
+  cout << "One Point Quadrature:  " << one_point_quadrature2D(f2, -1, 1, -1, 1) << "\n";
+  cout << "Two Points Quadrature: " << two_point_quadrature2D(f2, -1, 1, -1, 1) << "\n\n";
 
   cout << "Composite Rule (20 subintervals)" << "\n\n";
 
-  cout << "One Point Quadrature:  " << composite(one_point_quadrature2D, f2, 0, 5, 0, 5, 20) << "\n";
-  cout << "Two Points Quadrature: " << composite(two_point_quadrature2D, f2, 0, 5, 0, 5, 20) << "\n";
+  cout << "One Point Quadrature:  " << composite(one_point_quadrature2D, f2, -1, 1, -1, 1, 10) << "\n";
+  cout << "Two Points Quadrature: " << composite(two_point_quadrature2D, f2, -1, 1, -1, 1, 10) << "\n";
 
   return 0;
 }
