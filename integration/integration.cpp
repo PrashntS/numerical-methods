@@ -136,12 +136,16 @@ double composite(function <double (function <double (double, double)>, double, d
   double qi = (b - a) / subintervals,
          qj = (d - c) / subintervals,
          integral = 0, _a = 0, _b = 0, _c = 0, _d = 0;
+
   for (int i = 0; i < subintervals; i += 1) {
-    _a = a + i * qi;
+    _a = a + (i * qi);
     _b = a + (i + 1) * qi;
-    _c = c + i * qj;
-    _d = d + (i + 1) * qj;
-    integral += rule(f, _a, _b, _c, _d);
+
+    for (int j = 0; j < subintervals; j += 1) {
+      _c = c + (j * qj);
+      _d = c + (j + 1) * qj;
+      integral += rule(f, _a, _b, _c, _d);
+    }
   }
   return integral;
 }
@@ -150,40 +154,45 @@ double composite(function <double (function <double (double, double)>, double, d
  * One Dimesional Function
  */
 double f1(double x) {
-  return sin(x * x);
+  return 4 / (1 + pow(x, 2));
 }
 
 /**
  * Two Dimesional Function
  */
 double f2(double x, double y) {
-  return (x * x) + (y * y);
+  return sin(x * x) + (y * y);
 }
 
 int main(int argc, char const *argv[]) {
-  cout << "Integral of One Dimesional function f(x) = sin(x^2) from 0 to 5." << "\n\n";
 
-  cout << "Trapezoidal Rule:      " << trapezoidal_rule(f1, 0, 5)     << "\n";
-  cout << "Simpson's Rule:        " << simpsons_rule(f1, 0, 5)        << "\n";
-  cout << "One Point Quadrature:  " << one_point_quadrature1D(f1, 0, 5) << "\n";
-  cout << "Two Points Quadrature: " << two_point_quadrature1D(f1, 0, 5) << "\n\n";
+  double lower = 0, upper = 1, subinterval = 20;
 
-  cout << "Composite Rule (20 subintervals)" << "\n\n";
+  cout << "Integral of One Dimesional function f(x) = 4 / (1 + x^2) from " << lower << " to " << upper << "." << "\n\n";
 
-  cout << "Trapezoidal Rule:      " << composite(trapezoidal_rule, f1, 0, 5, 20)     << "\n";
-  cout << "Simpson's Rule:        " << composite(simpsons_rule, f1, 0, 5, 20)        << "\n";
-  cout << "One Point Quadrature:  " << composite(one_point_quadrature1D, f1, 0, 5, 20) << "\n";
-  cout << "Two Points Quadrature: " << composite(two_point_quadrature1D, f1, 0, 5, 20) << "\n\n\n";
+  cout << "Trapezoidal Rule:      " << trapezoidal_rule(f1, lower, upper)       << "\n";
+  cout << "Simpson's Rule:        " << simpsons_rule(f1, lower, upper)          << "\n";
+  cout << "One Point Quadrature:  " << one_point_quadrature1D(f1, lower, upper) << "\n";
+  cout << "Two Points Quadrature: " << two_point_quadrature1D(f1, lower, upper) << "\n\n";
+
+  cout << "Composite Rule (" << subinterval << " subintervals)" << "\n\n";
+
+  cout << "Trapezoidal Rule:      " << composite(trapezoidal_rule, f1, lower, upper, subinterval)       << "\n";
+  cout << "Simpson's Rule:        " << composite(simpsons_rule, f1, lower, upper, subinterval)          << "\n";
+  cout << "One Point Quadrature:  " << composite(one_point_quadrature1D, f1, lower, upper, subinterval) << "\n";
+  cout << "Two Points Quadrature: " << composite(two_point_quadrature1D, f1, lower, upper, subinterval) << "\n\n\n";
 
   cout << "Integral of Two Dimesional function f(x, y) = sin(x^2) + cos(y^2) from x, y 0 to 5." << "\n\n";
 
-  cout << "One Point Quadrature:  " << one_point_quadrature2D(f2, -1, 1, -1, 1) << "\n";
-  cout << "Two Points Quadrature: " << two_point_quadrature2D(f2, -1, 1, -1, 1) << "\n\n";
+  double a = 0, b = 1, c = 4, d = 6;
 
-  cout << "Composite Rule (20 subintervals)" << "\n\n";
+  cout << "One Point Quadrature:  " << one_point_quadrature2D(f2, a, b, c, d) << "\n";
+  cout << "Two Points Quadrature: " << two_point_quadrature2D(f2, a, b, c, d) << "\n\n";
 
-  cout << "One Point Quadrature:  " << composite(one_point_quadrature2D, f2, -1, 1, -1, 1, 10) << "\n";
-  cout << "Two Points Quadrature: " << composite(two_point_quadrature2D, f2, -1, 1, -1, 1, 10) << "\n";
+  cout << "Composite Rule ("<< subinterval <<" subintervals)" << "\n\n";
+
+  cout << "One Point Quadrature:  " << composite(one_point_quadrature2D, f2, a, b, c, d, subinterval) << "\n";
+  cout << "Two Points Quadrature: " << composite(two_point_quadrature2D, f2, a, b, c, d, subinterval) << "\n";
 
   return 0;
 }
